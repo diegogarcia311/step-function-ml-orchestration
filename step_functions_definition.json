@@ -1,1 +1,35 @@
+{
+  "Comment": "ML Retraining Pipeline",
+  "StartAt": "PreprocessData",
+  "States": {
+    "PreprocessData": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:PreprocessData",
+      "Next": "TrainModel",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 10,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        }
+      ]
+    },
+    "TrainModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:TrainModel",
+      "Next": "EvaluateModel"
+    },
+    "EvaluateModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:EvaluateModel",
+      "Next": "DeployModel"
+    },
+    "DeployModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:DeployModel",
+      "End": true
+    }
+  }
+}
 
