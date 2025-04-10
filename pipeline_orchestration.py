@@ -13,4 +13,3 @@ def start_pipeline(execution_name="ml-retraining-exec"):
 
 if __name__ == "__main__":
     start_pipeline()
-
